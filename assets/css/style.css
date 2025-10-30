@@ -18,10 +18,14 @@ body {
 }
 
 .logo {
-  height: 30px;   
   font-size: 1.5rem;
   font-weight: bold;
   color: #88c0ff;
+}
+.logo-img {
+  height: 5px;  /* 或你希望的大小 */
+  margin-right: 0.3rem;
+  vertical-align: middle;
 }
 
 .nav-links {
