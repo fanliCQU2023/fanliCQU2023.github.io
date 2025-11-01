@@ -156,3 +156,34 @@ footer {
   }
   .nav-links.open { display: flex; }
 }
+.member-card {
+  display: flex;                /* 让图片和文字水平排列 */
+  align-items: center;          /* 垂直居中 */
+  gap: 20px;                    /* 图片与文字之间的间距 */
+  margin-bottom: 30px;          /* 每个卡片的下间距 */
+  background: rgba(255, 255, 255, 0.05); /* 可选：半透明背景 */
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 图片大小控制：高度大约等于 5 行字 */
+.member-photo {
+  height: 90px;                /* 可微调，约为 5 行文字高度 */
+  width: auto;                  /* 保持宽高比例 */
+  border-radius: 8px;
+  object-fit: cover;            /* 防止图片拉伸 */
+}
+
+/* 文字部分 */
+.member-info h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.member-info p {
+  margin: 4px 0;
+  color: #ccc;
+  line-height: 1.4;
+}
