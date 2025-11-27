@@ -187,11 +187,14 @@
 </div>
 
 
+<!-- 引入自动生成的 PDF 列表 -->
+<script src="pdf_list.js"></script>
+
 <script>
 /* --------------------------
    1. Password shared
 -------------------------- */
-const PASSWORD = "spells2023"; // ← 修改为你的密码
+const PASSWORD = "spells2023";
 
 function checkPassword() {
     let p = document.getElementById("password").value;
@@ -213,48 +216,18 @@ else document.getElementById("login-box").style.display = "block";
 
 
 /* --------------------------
-   2. Load PDFs automatically
+   2. allData 来自 pdf_list.js
 -------------------------- */
+// pdf_list.js 中已经定义了：
+// let allData = [ {...}, {...}, ... ];
 
-let allData = [];
 let activeTags = new Set();
 let currentPage = 1;
 const perPage = 20;
 
-async function loadPDFs() {
-    try {
-        let res = await fetch("./deepchat/");
-        let text = await res.text();
-
-        let files = [...text.matchAll(/href="([^"]+\.pdf)"/g)].map(m => m[1]);
-
-        files.forEach(f => {
-            let match = f.match(/^(\d{8})*-*(.*?)*-*(.*?)\.pdf$/);
-            if (!match) return;
-
-            let date = match[1];
-            let title = match[2];
-            let tags = match[3].split(",");
-
-            allData.push({
-                date,
-                title,
-                pdf: "deepchat/" + f,
-                tags
-            });
-        });
-
-        // sort by date DESC
-        allData.sort((a,b)=> b.date.localeCompare(a.date));
-
-        renderFeatured();
-        render();
-    } catch(e){
-        console.log("无法列出 PDF（GitHub Pages 需要开启目录索引）", e);
-    }
-}
-
-loadPDFs();
+// 启动时渲染页面
+renderFeatured();
+render();
 
 
 /* --------------------------
@@ -281,7 +254,7 @@ function renderFeatured() {
    4. Filtering + Search
 -------------------------- */
 
-document.getElementById("search").addEventListener("input", ()=> {
+document.getElementById("search").addEventListener("input", ()=>{
     currentPage = 1;
     render();
 });
@@ -299,8 +272,10 @@ function toggleTag(tag){
     render();
 }
 
+
+
 /* --------------------------
-   5. Render Timeline with pagination
+   5. Render Timeline + Pagination
 -------------------------- */
 
 function render(){
@@ -341,7 +316,6 @@ function render(){
         list.appendChild(div);
     });
 
-    // pagination
     let pg = document.getElementById("pagination");
     pg.innerHTML = "";
     for (let i=1; i<=totalPages; i++){
@@ -352,7 +326,6 @@ function render(){
         pg.appendChild(b);
     }
 }
-
 </script>
 
 </body>

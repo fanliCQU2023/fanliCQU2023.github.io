@@ -1,0 +1,31 @@
+async function loadPDFs() {
+    try {
+        let res = await fetch("./deepchat/list.json");
+        let files = await res.json();
+
+        files.forEach(obj => {
+            let f = obj.file;
+
+            let match = f.match(/^(\d{8})-*(.*?)-*(.*?)\.pdf$/);
+            if (!match) return;
+
+            let date = match[1];
+            let title = match[2];
+            let tags = match[3].split(",");
+
+            allData.push({
+                date,
+                title,
+                pdf: "deepchat/" + f,
+                tags
+            });
+        });
+
+        allData.sort((a,b)=> b.date.localeCompare(a.date));
+
+        renderFeatured();
+        render();
+    } catch(e){
+        console.log("无法加载 list.json", e);
+    }
+}
