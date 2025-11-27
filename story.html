@@ -21,18 +21,11 @@
     .wrap{max-width:var(--maxw);margin:30px auto;padding:24px;box-sizing:border-box;}
     header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;}
     .brand{display:flex;gap:12px;align-items:center}
-    .logo{
-      width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#5fb0ff 60%);display:flex;align-items:center;justify-content:center;font-weight:700;color:#051126;font-size:18px;box-shadow:0 6px 20px rgba(8,22,42,0.6);
-    }
     h1{margin:0;font-size:28px;letter-spacing:0.6px}
     p.lead{margin:8px 0 0;color:var(--muted);font-size:14px}
 
     /* Story container */
-    .story{
-      margin-top:24px;
-      display:grid;
-      gap:var(--gap);
-    }
+    .story{margin-top:24px;display:grid;gap:var(--gap);}
 
     /* Scene cards */
     .scene{
@@ -49,69 +42,43 @@
       transition:transform .6s cubic-bezier(.2,.9,.2,1), box-shadow .4s;
     }
     .scene:hover{ transform:translateY(-6px); box-shadow:0 24px 60px rgba(3,8,20,0.6); }
-
-    .scene .icon{
-      width:120px;height:120px;border-radius:14px;flex:0 0 120px;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;color:var(--bg);
-      background:linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
-      filter:drop-shadow(0 8px 24px rgba(0,0,0,0.6));
-    }
+    .scene .icon{width:120px;height:120px;border-radius:14px;flex:0 0 120px;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;color:var(--bg);background:linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));filter:drop-shadow(0 8px 24px rgba(0,0,0,0.6));}
     .scene .body{flex:1;min-width:0}
     .scene h2{margin:0 0 8px 0;font-size:20px;color:var(--accent)}
     .scene p{margin:0;color:var(--soft);line-height:1.6;font-size:15px;opacity:0.95}
 
-    /* small narration note */
-    .narration{margin-top:8px;color:var(--muted);font-size:13px}
-
-    /* special styles for each spirit */
+    /* Spirit color styles */
     .spin .icon{background:linear-gradient(135deg,#ffd27a,#ffb86b); color:#2b1a00}
     .photon .icon{background:linear-gradient(135deg,#ffd6ff,#caa4ff); color:#2b005b}
     .electron .icon{background:linear-gradient(135deg,#a6fff6,#71e7ff); color:#00323a}
     .lattice .icon{background:linear-gradient(135deg,#c8ffb6,#8ef08a); color:#06360b}
 
-    /* accent glow */
-    .scene::after{
-      content:"";
-      position:absolute;
-      right:-120px;top:-120px;
-      width:320px;height:320px;border-radius:50%;
-      background: radial-gradient(circle at center, rgba(136,192,255,0.06), transparent 40%);
-      pointer-events:none;
-      transition:opacity .6s;
-      opacity:0.7;
-    }
-    .scene.spin::after{ background: radial-gradient(circle at center, rgba(255,210,122,0.07), transparent 40%);}
-    .scene.photon::after{ background: radial-gradient(circle at center, rgba(204,153,255,0.06), transparent 40%);}
-    .scene.electron::after{ background: radial-gradient(circle at center, rgba(126,244,236,0.06), transparent 40%);}
-    .scene.lattice::after{ background: radial-gradient(circle at center, rgba(168,255,163,0.06), transparent 40%);}
+    .scene::after{content:"";position:absolute;right:-120px;top:-120px;width:320px;height:320px;border-radius:50%;background: radial-gradient(circle at center, rgba(136,192,255,0.06), transparent 40%);pointer-events:none;transition:opacity .6s;opacity:0.7;}
+    .scene.spin::after{ background: radial-gradient(circle at center, rgba(255,210,122,0.07), transparent 40%);}    
+    .scene.photon::after{ background: radial-gradient(circle at center, rgba(204,153,255,0.06), transparent 40%);}    
+    .scene.electron::after{ background: radial-gradient(circle at center, rgba(126,244,236,0.06), transparent 40%);}    
+    .scene.lattice::after{ background: radial-gradient(circle at center, rgba(168,255,163,0.06), transparent 40%);}    
 
-    /* poetic final card */
-    .final{
-      text-align:center;padding:40px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.017), rgba(255,255,255,0.01));
-      border-radius:var(--radius);
-      border:1px solid rgba(255,255,255,0.03);
-    }
+    /* Final card */
+    .final{text-align:center;padding:40px;background:linear-gradient(180deg, rgba(255,255,255,0.017), rgba(255,255,255,0.01));border-radius:var(--radius);border:1px solid rgba(255,255,255,0.03);}
     .final h3{color:var(--accent);margin:0 0 8px 0}
     .final p{margin:0;color:var(--soft);line-height:1.7;font-size:16px}
 
-    /* subtle entrance animations */
     .scene, .final{opacity:0; transform:translateY(18px) scale(.995); transition:opacity .9s ease, transform .9s cubic-bezier(.2,.9,.2,1); }
     .visible{opacity:1; transform:translateY(0) scale(1);}
 
-    /* controls */
-    .controls{display:flex;gap:12px;align-items:center;margin-top:18px}
-    .btn{
-      background:var(--accent);color:#041029;padding:10px 14px;border-radius:12px;text-decoration:none;font-weight:600;border:none;cursor:pointer;
-      box-shadow: 0 6px 18px rgba(8,22,42,0.45);
-    }
-    .btn.secondary{background:transparent;color:var(--soft);border:1px solid rgba(255,255,255,0.06);}
+    /* Song section */
+    .song-section{margin-top:40px;padding:24px;border-radius:var(--radius);background:rgba(255,255,255,0.03);display:flex;gap:24px;box-shadow:0 8px 30px rgba(0,0,0,0.4);}    
+    .lyrics{flex:1;max-height:420px;overflow-y:auto;white-space:pre-line;line-height:1.6;font-size:15px;color:var(--soft);}    
+    audio{width:260px;height:42px;margin-top:12px;}
 
     footer{margin-top:36px;color:var(--muted);font-size:13px;text-align:center;padding-bottom:30px}
 
-    /* responsive */
     @media (max-width:880px){
       .scene{flex-direction:column;align-items:flex-start;padding:20px}
       .scene .icon{width:88px;height:88px;flex:0 0 88px;font-size:28px}
+      .song-section{flex-direction:column}
+      audio{width:100%}
     }
   </style>
 </head>
@@ -125,13 +92,59 @@
         </div>
       </div>
       <div class="controls" aria-hidden="true">
-        <button class="btn" id="playAll">Play Narration</button>
         <a class="btn secondary" href="index.html">Back Home</a>
       </div>
     </header>
 
+    <!-- SONG SECTION -->
+    <section class="song-section">
+      <div style="flex:0 0 260px">
+        <h2 style="margin:0 0 10px 0;color:var(--accent)">Solid State of Mind — Song</h2>
+        <audio id="song" controls>
+          <source src="mp3/The solid states of mind.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+
+      <div class="lyrics" id="lyrics">
+[Verse 1]
+We dive into the lattice, where atoms love to sway,
+Electrons play their quantum games in bands that light the way.
+From Bloch waves to phonons, and Cooper pairs at night,
+We’re chasing phase transitions in superconducting light.
+
+[Chorus]
+In this solid state of mind, we learn to see what's real,
+From Fermi seas to crystal fields, and Dirac's massless zeal.
+Spin, charge, and symmetry, they all begin to bind,
+We’re dancing in the wonders of the solid state of mind.
+
+[Verse 2]
+Topological dreams, where edges freely roam,
+Graphene sings its silent song, and quasiparticles find home.
+Magnetic orders whisper in two dimensions thin,
+Every layer holds a story, and the future lies within.
+
+[Chorus]
+In this solid state of mind, we learn to see what's real,
+From Fermi seas to crystal fields, and Dirac's massless zeal.
+Spin, charge, and symmetry, they all begin to bind,
+We’re dancing in the wonders of the solid state of mind.
+
+[Bridge]
+ARPES scans the truth inside,
+Neutrons tell us how spins glide.
+We chase the broken symmetries—
+That build tomorrow’s memories.
+
+[Final Chorus]
+In this solid state of mind, our knowledge grows refined,
+We see the world in lattice form and time that’s redefined.
+From semiconductors’ glow to Mott’s resistive kind—
+We’re changing all the world, in this solid state of mind.
+      </div>
+    </section>
+
     <main class="story" id="story">
-      <!-- Intro -->
       <section class="scene visible" id="intro">
         <div class="icon">✨</div>
         <div class="body">
@@ -140,7 +153,6 @@
         </div>
       </section>
 
-      <!-- Spin -->
       <section class="scene spin" id="spin">
         <div class="icon">🌀</div>
         <div class="body">
@@ -149,7 +161,6 @@
         </div>
       </section>
 
-      <!-- Photon -->
       <section class="scene photon" id="photon">
         <div class="icon">💫</div>
         <div class="body">
@@ -158,7 +169,6 @@
         </div>
       </section>
 
-      <!-- Electron -->
       <section class="scene electron" id="electron">
         <div class="icon">⚡</div>
         <div class="body">
@@ -167,7 +177,6 @@
         </div>
       </section>
 
-      <!-- Lattice -->
       <section class="scene lattice" id="lattice">
         <div class="icon">🌍</div>
         <div class="body">
@@ -176,13 +185,11 @@
         </div>
       </section>
 
-      <!-- Finale -->
       <section class="final" id="final">
         <h3>Together — A Living World</h3>
         <p>Together, these four spirits — <strong>Spin</strong>, <strong>Photon</strong>, <strong>Electron</strong>, and <strong>Lattice</strong> — build a living world where motion becomes meaning, and materials begin to dream. That world is our laboratory, and we are simply its storytellers.</p>
         <p style="margin-top:14px;font-style:italic;color:var(--muted)">In front of the giant men in history, we choose to enjoy this journey as children — picking the shells at the seaside of science, each one shimmering with a story of its own. 🌊</p>
       </section>
-
     </main>
 
     <footer>
@@ -191,44 +198,13 @@
   </div>
 
   <script>
-    // Simple scroll-trigger reveal + optional "play all" narration cues for video timing.
-    (function(){
-      const scenes = Array.from(document.querySelectorAll('.scene, .final'));
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(en => {
-          if(en.isIntersecting){
-            en.target.classList.add('visible');
-          }
-        });
-      }, {threshold: 0.18});
-
-      scenes.forEach(s => io.observe(s));
-
-      // Play All: simulate timed narration by auto-scrolling through scenes
-      const playBtn = document.getElementById('playAll');
-      playBtn.addEventListener('click', async () => {
-        playBtn.disabled = true;
-        playBtn.textContent = 'Playing...';
-        // durations (seconds) approximate for each scene to match narration pacing
-        const durations = [3.5, 9.0, 9.0, 9.0, 8.0]; // intro, spin, photon, electron, lattice+final
-        const order = ['intro','spin','photon','electron','lattice','final'];
-        for(let i=0;i<order.length;i++){
-          const id = order[i];
-          const el = document.getElementById(id);
-          if(!el) continue;
-          el.scrollIntoView({behavior:'smooth', block:'center'});
-          // ensure visible class
-          el.classList.add('visible');
-          // wait for approximate duration (use smaller if mobile)
-          const t = durations[Math.min(i,durations.length-1)] || 6.0;
-          await new Promise(r => setTimeout(r, t*1000));
-        }
-        // go to final and center
-        document.getElementById('final').scrollIntoView({behavior:'smooth', block:'center'});
-        playBtn.disabled = false;
-        playBtn.textContent = 'Play Narration';
+    const scenes = Array.from(document.querySelectorAll('.scene, .final'));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if(en.isIntersecting) en.target.classList.add('visible');
       });
-    })();
+    }, {threshold: 0.18});
+    scenes.forEach(s => io.observe(s));
   </script>
 </body>
 </html>
