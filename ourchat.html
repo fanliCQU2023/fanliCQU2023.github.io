@@ -143,9 +143,6 @@
 <div class="wrap" id="top">
   <header>
     <div class="brand">
-      <div class="logo">
-        <img src="img/logo.png" alt="SPELLs Logo" class="logo-img" />
-      </div>
       <div>
         <h1>DeepChat with AI</h1>
         <p class="lead">What have we learned from Deepchat with AI?</p>
@@ -232,7 +229,7 @@ async function loadPDFs() {
         let files = [...text.matchAll(/href="([^"]+\.pdf)"/g)].map(m => m[1]);
 
         files.forEach(f => {
-            let match = f.match(/^(\d{8})\s*-\s*(.*?)\s*-\s*(.*?)\.pdf$/);
+            let match = f.match(/^(\d{8})*-*(.*?)*-*(.*?)\.pdf$/);
             if (!match) return;
 
             let date = match[1];
