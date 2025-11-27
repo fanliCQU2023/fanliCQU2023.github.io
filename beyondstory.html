@@ -5,8 +5,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BeyondStory | SPELLs Group</title>
   <link rel="stylesheet" href="assets/css/style.css" />
+
+  <style>
+    /* Password overlay style */
+    #passwordOverlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.85);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      z-index: 9999;
+    }
+    #passwordOverlay input {
+      padding: 10px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: none;
+      margin-top: 15px;
+      text-align: center;
+    }
+    #passwordOverlay button {
+      margin-top: 15px;
+      padding: 10px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background: #4fa3ff;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Topic card style */
+    .topic-section {
+      padding: 40px;
+      max-width: 900px;
+      margin: auto;
+    }
+    .topic-card {
+      background: #f5f7fa;
+      border-radius: 12px;
+      padding: 20px 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .topic-card h2 {
+      margin-bottom: 10px;
+    }
+    .topic-card ul {
+      margin-left: 20px;
+      padding-left: 0;
+    }
+    .topic-card li {
+      margin: 6px 0;
+    }
+    .more-link {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #007bff;
+      text-decoration: none;
+    }
+  </style>
+
+  <script>
+    window.onload = function () {
+      const overlay = document.getElementById("passwordOverlay");
+      document.getElementById("pwButton").onclick = function () {
+        const pw = document.getElementById("pwInput").value;
+        if (pw === "spells2023") {
+          overlay.style.display = "none";
+        } else {
+          alert("Incorrect password.");
+        }
+      };
+    }
+  </script>
 </head>
+
 <body>
+
+  <!-- Password protection -->
+  <div id="passwordOverlay">
+    <h2>Enter Password</h2>
+    <input type="password" id="pwInput" placeholder="Password" />
+    <button id="pwButton">Enter</button>
+  </div>
+
   <header>
     <nav class="navbar glass">
       <div class="logo">
@@ -31,19 +120,79 @@
     <p>AI-assisted literature storytelling — exploring the ideas behind discoveries.</p>
   </section>
 
-  <section class="story-list">
-    <article>
-      <h3>Generation of Pure Spin Current with Insulating Antiferromagnetic Materials</h3>
-      <p>【本期问题】如何在绝缘反铁磁体系中实现纯自旋流的生成？</p>
-      <p>【故事梗概】通过界面交换作用诱导的自旋泵浦效应，研究展示了绝缘反铁磁体在自旋电流生成中的潜力。</p>
-    </article>
 
-    <article>
-      <h3>Coupled Spin–Phonon Modes in Quantum Magnets</h3>
-      <p>【本期问题】磁性与晶格振动的相互作用如何改变低能激发谱？</p>
-      <p>【故事梗概】研究揭示了反铁磁体系中磁振子与光学声子混合形成的新型杂化模态。</p>
-    </article>
+  <!-- =======================
+       Literature Topics Block
+       ======================= -->
+  <section class="topic-section">
+
+    <!-- Magnon -->
+    <div class="topic-card">
+      <h2>Magnon</h2>
+      <ul>
+        <li><a href="folder/magnon_01.pdf">Magnon transport in antiferromagnets</a></li>
+        <li><a href="folder/magnon_02.pdf">Magnon–phonon coupling overview</a></li>
+        <li><a href="folder/magnon_03.pdf">Spin pumping and magnon current</a></li>
+        <li><a href="folder/magnon_04.pdf">Magnonic crystals review</a></li>
+        <li><a href="folder/magnon_05.pdf">THz magnon dynamics</a></li>
+      </ul>
+      <a class="more-link" href="folder/magnon_more.html">More…</a>
+    </div>
+
+    <!-- 2D materials -->
+    <div class="topic-card">
+      <h2>2D Materials</h2>
+      <ul>
+        <li><a href="folder/2d_01.pdf">Van der Waals magnetic materials</a></li>
+        <li><a href="folder/2d_02.pdf">Twisted heterostructures overview</a></li>
+        <li><a href="folder/2d_03.pdf">2D superconductors review</a></li>
+        <li><a href="folder/2d_04.pdf">Electron correlation in TMD</a></li>
+        <li><a href="folder/2d_05.pdf">Interlayer excitons in 2D</a></li>
+      </ul>
+      <a class="more-link" href="folder/2d_more.html">More…</a>
+    </div>
+
+    <!-- Freestanding oxide -->
+    <div class="topic-card">
+      <h2>Freestanding Oxide</h2>
+      <ul>
+        <li><a href="folder/ox_01.pdf">Strain engineering in oxide membranes</a></li>
+        <li><a href="folder/ox_02.pdf">Functional oxide films review</a></li>
+        <li><a href="folder/ox_03.pdf">Quantum oxide thin films</a></li>
+        <li><a href="folder/ox_04.pdf">Correlated electrons in oxides</a></li>
+        <li><a href="folder/ox_05.pdf">Lattice dynamics in complex oxides</a></li>
+      </ul>
+      <a class="more-link" href="folder/oxide_more.html">More…</a>
+    </div>
+
+    <!-- Superconductivity -->
+    <div class="topic-card">
+      <h2>Superconductivity</h2>
+      <ul>
+        <li><a href="folder/sc_01.pdf">Unconventional superconductivity review</a></li>
+        <li><a href="folder/sc_02.pdf">TMD superconductors</a></li>
+        <li><a href="folder/sc_03.pdf">Topological superconductors</a></li>
+        <li><a href="folder/sc_04.pdf">BCS–BEC crossover</a></li>
+        <li><a href="folder/sc_05.pdf">Magnetic field tuning in SC</a></li>
+      </ul>
+      <a class="more-link" href="folder/sc_more.html">More…</a>
+    </div>
+
+    <!-- Optical control -->
+    <div class="topic-card">
+      <h2>Optical Control</h2>
+      <ul>
+        <li><a href="folder/op_01.pdf">Floquet engineering basics</a></li>
+        <li><a href="folder/op_02.pdf">Ultrafast switching of magnetism</a></li>
+        <li><a href="folder/op_03.pdf">THz field control</a></li>
+        <li><a href="folder/op_04.pdf">Optically driven phase transitions</a></li>
+        <li><a href="folder/op_05.pdf">Light–matter interaction review</a></li>
+      </ul>
+      <a class="more-link" href="folder/optical_more.html">More…</a>
+    </div>
+
   </section>
+
 
   <footer>
     <p>© 2025 SPELLs Group</p>
