@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OurChat | SPELLs Group</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    /* ----- Page-specific styles (keeps consistent with site) ----- */
+    :root{
+      --bg:#071026; --card:#0b1a2a; --muted:#9fb6d6; --accent:#88c0ff; --glass: rgba(255,255,255,0.04);
+    }
+    body{background: radial-gradient(900px 300px at 10% 10%, rgba(136,192,255,0.02), transparent), var(--bg); color: #e6eef8; margin:0; font-family: Inter, "Helvetica Neue", Arial, sans-serif;}
+    .wrap{max-width:1100px;margin:28px auto;padding:18px;}
+    header .logo{display:flex;align-items:center;gap:12px}
+    header .logo-img{width:44px;height:44px;border-radius:8px;object-fit:cover}
+    .page-header{margin:14px 0 26px}
+    .page-header h1{margin:0;font-size:28px}
+    .page-header p{margin:6px 0 0;color:var(--muted)}
+
+    /* Password overlay */
+    #passwordOverlay{
+      position:fixed;left:0;top:0;width:100vw;height:100vh;background:rgba(4,8,18,0.9);display:flex;
+      align-items:center;justify-content:center;z-index:9999;padding:24px;box-sizing:border-box;
+    }
+    #pwBox{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:28px;max-width:420px;width:100%;text-align:center;border:1px solid rgba(255,255,255,0.03)}
+    #pwBox h2{margin:0 0 6px 0;color:var(--accent)}
+    #pwBox p{margin:0 0 14px 0;color:var(--muted)}
+    #pwInput{width:100%;padding:10px 12px;border-radius:8px;border:none;font-size:16px;margin-top:8px;box-sizing:border-box}
+    #pwButton{margin-top:12px;padding:10px 18px;border-radius:8px;border:none;background:var(--accent);color:#051029;font-weight:700;cursor:pointer}
+
+    /* Controls (search + tags) */
+    .controls-bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:18px 0}
+    .search-input{flex:1;min-width:220px}
+    .search-input input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--muted)}
+    .tag-filters{display:flex;gap:8px;flex-wrap:wrap}
+    .tag-filters button{padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.05);background:transparent;color:var(--muted);cursor:pointer}
+    .tag-filters button.active{background:var(--accent);color:#041029;border-color:var(--accent)}
+
+    /* Pinned list */
+    .pinned-area{margin:18px 0}
+    .pinned-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+    .pinned-card{background:var(--card);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+    .pinned-card a{color:var(--soft);text-decoration:none;font-weight:600}
+    .pinned-card small{color:var(--muted);display:block;margin-top:6px}
+
+    /* Timeline list */
+    .timeline{margin-top:18px}
+    .timeline-item{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      border-radius:10px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;border:1px solid rgba(255,255,255,0.03)
+    }
+    .timeline-left{max-width:78%}
+    .timeline-left a{color:#dfefff;text-decoration:none;font-weight:600}
+    .timeline-meta{color:var(--muted);font-size:13px;margin-top:6px}
+    .download-btn{padding:8px 12px;border-radius:8px;background:#2b9fff;color:#041029;border:none;cursor:pointer;text-decoration:none;font-weight:700}
+
+    /* Pagination */
+    .pagination{display:flex;gap:8px;justify-content:center;margin-top:18px;align-items:center}
+    .pagination button{padding:8px 10px;border-radius:8px;border:none;background:rgba(255,255,255,0.03);color:var(--muted);cursor:pointer}
+    .pagination button.primary{background:var(--accent);color:#041029}
+
+    /* responsive */
+    @media (max-width:720px){
+      .timeline-left{max-width:66%}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="logo">
+          <img src="img/logo.png" class="logo-img" alt="SPELLs"/>
+          <div style="margin-left:8px"><strong>SPELLs</strong></div>
+        </div>
+        <div style="font-size:13px;color:var(--muted)">Group internal DeepChat & literature</div>
+      </div>
+    </header>
+
+    <section class="page-header">
+      <h1>OurChat</h1>
+      <p>Group discussion timeline — search, filter, and download deepchat PDFs.</p>
+    </section>
+
+    <!-- password overlay (shared key spells_pw_ok) -->
+    <div id="passwordOverlay" aria-hidden="false">
+      <div id="pwBox" role="dialog" aria-label="Password">
+        <h2>Enter password to continue</h2>
+        <p>Use the group password to access internal DeepChat materials.</p>
+        <input id="pwInput" type="password" placeholder="Password" />
+        <div style="display:flex;gap:8px;justify-content:center">
+          <button id="pwButton">Enter</button>
+          <button id="pwClear" title="Clear saved login" style="background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04);border-radius:8px;padding:10px 12px">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- controls -->
+    <div class="controls-bar" role="region" aria-label="controls">
+      <div class="search-input">
+        <input id="searchBox" placeholder="Search by title or keywords (press Enter)" />
+      </div>
+      <div class="tag-filters" id="tagFilters" aria-label="tag filters">
+        <!-- tags inserted by script -->
+      </div>
+    </div>
+
+    <!-- Pinned -->
+    <div class="pinned-area">
+      <h2>📌 Pinned topics</h2>
+      <div class="pinned-grid" id="pinnedGrid">
+        <!-- pinned cards inserted by script -->
+      </div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid rgba(255,255,255,0.03)"/>
+
+    <!-- Timeline -->
+    <div class="timeline" id="timelineContainer">
+      <!-- items by script -->
+    </div>
+
+    <div class="pagination" id="paginationControls">
+      <!-- controls -->
+    </div>
+
+    <footer style="margin-top:28px;color:var(--muted);text-align:center">
+      © 2025 SPELLs Group
+    </footer>
+  </div>
+
+<script>
+/*
+  OurChat client script
+  - Shared password key: spells_pw_ok (localStorage)
+  - Tries to fetch deepchat_pdfs/manifest.json. If missing, uses fallback sampleData.
+  - Supports search, tag filters, pinned (pinned:true), pagination (20/page), descending date.
+*/
+
+const PASSWORD_KEY = "spells_pw_ok";
+const GROUP_PASSWORD = "spells2023"; // change here if needed
+const MANIFEST_URL = "deepchat_pdfs/manifest.json";
+const PAGE_SIZE = 20;
+let allData = [];      // full dataset
+let filtered = [];     // after search & tag filter
+let currentPage = 1;
+let activeTag = null;
+
+// sample fallback data (use only if manifest missing)
+const sampleData = [
+  {date:"2025-11-27", title:"On magnon-phonon coupling", pdf:"deepchat_pdfs/20251127_magnon.pdf", tags:["物理","神经"], pinned:true},
+  {date:"2025-11-26", title:"ARPES: Matrix elements and spectra", pdf:"deepchat_pdfs/20251126_arpes.pdf", tags:["物理"], pinned:false},
+  {date:"2025-11-20", title:"Superconducting phase stiffness", pdf:"deepchat_pdfs/20251120_sc.pdf", tags:["物理"], pinned:false},
+  {date:"2025-11-18", title:"Optical Control Experiments", pdf:"deepchat_pdfs/20251118_opt.pdf", tags:["物理","人生"], pinned:false},
+  {date:"2025-11-12", title:"Neural-inspired device notes", pdf:"deepchat_pdfs/20251112_neuro.pdf", tags:["神经"], pinned:false}
+];
+
+// ---------------- Password logic (shared with beyondstory)
+function initPasswordUI(){
+  const overlay = document.getElementById("passwordOverlay");
+  const pwIn = document.getElementById("pwInput");
+  const btn = document.getElementById("pwButton");
+  const clearBtn = document.getElementById("pwClear");
+
+  // if already validated, hide overlay
+  if(localStorage.getItem(PASSWORD_KEY) === "true"){
+    overlay.style.display = "none";
+  }
+
+  btn.addEventListener("click", ()=>{
+    const v = pwIn.value || "";
+    if(v === GROUP_PASSWORD){
+      localStorage.setItem(PASSWORD_KEY, "true");
+      overlay.style.display = "none";
+    } else {
+      alert("Incorrect password.");
+      pwIn.value = "";
+      pwIn.focus();
+    }
+  });
+
+  pwIn.addEventListener("keyup", (e)=>{
+    if(e.key === "Enter") btn.click();
+  });
+
+  clearBtn.addEventListener("click", ()=>{
+    localStorage.removeItem(PASSWORD_KEY);
+    alert("Saved login cleared. Next visit will require password.");
+    // bring overlay back
+    document.getElementById("passwordOverlay").style.display = "flex";
+  });
+}
+
+// ---------------- Fetch manifest (auto-generate timeline)
+async function loadManifest(){
+  try {
+    const r = await fetch(MANIFEST_URL, {cache: "no-store"});
+    if(!r.ok) throw new Error("manifest not found");
+    const j = await r.json();
+    // validate entries minimally
+    if(!Array.isArray(j)) throw new Error("invalid manifest");
+    allData = j.map(normalizeEntry).filter(Boolean);
+  } catch(e){
+    console.warn("Manifest load failed, using sample data:", e);
+    allData = sampleData.map(normalizeEntry);
+  }
+  // sort descending by date
+  allData.sort((a,b)=> (b.date||"").localeCompare(a.date||""));
+}
+
+// normalize/validate entry
+function normalizeEntry(it){
+  if(!it) return null;
+  // ensure fields
+  return {
+    date: (it.date||"0000-00-00"),
+    title: it.title || "Untitled",
+    pdf: it.pdf || "#",
+    tags: Array.isArray(it.tags)? it.tags.map(t=>String(t)) : [],
+    pinned: !!it.pinned,
+    summary: it.summary || ""
+  };
+}
+
+// ---------------- UI: tags (predefined list, but also collect from data)
+const predefinedTags = ["生活","运动","物理","神经","人生"];
+function renderTagFilters(){
+  const container = document.getElementById("tagFilters");
+  container.innerHTML = "";
+  predefinedTags.forEach(t=>{
+    const btn = document.createElement("button");
+    btn.textContent = t;
+    btn.dataset.tag = t;
+    btn.addEventListener("click", ()=>{
+      if(activeTag === t){
+        activeTag = null;
+      } else {
+        activeTag = t;
+      }
+      // visual active toggle
+      document.querySelectorAll("#tagFilters button").forEach(b=> b.classList.toggle("active", b.dataset.tag === activeTag));
+      applyFilters();
+    });
+    container.appendChild(btn);
+  });
+}
+
+// ---------------- UI: pinned
+function renderPinned(){
+  const grid = document.getElementById("pinnedGrid");
+  grid.innerHTML = "";
+  const pinned = allData.filter(d=>d.pinned).slice(0,5);
+  if(pinned.length === 0){
+    grid.innerHTML = "<div style='color:var(--muted)'>No pinned topics yet.</div>";
+    return;
+  }
+  pinned.forEach(item=>{
+    const card = document.createElement("div");
+    card.className = "pinned-card";
+    card.innerHTML = `<a href="${item.pdf}" target="_blank" rel="noopener">${escapeHtml(item.title)}</a><small>${item.date} • ${item.tags.join(", ")}</small>`;
+    grid.appendChild(card);
+  });
+}
+
+// ---------------- Apply search + tag filters
+function applyFilters(){
+  const q = (document.getElementById("searchBox").value || "").trim().toLowerCase();
+  filtered = allData.filter(it=>{
+    // tag filter
+    if(activeTag && (!(it.tags||[]).includes(activeTag))) return false;
+    // search by title or summary
+    if(!q) return true;
+    return (it.title && it.title.toLowerCase().includes(q)) || (it.summary && it.summary.toLowerCase().includes(q)) || (it.tags && it.tags.join(" ").toLowerCase().includes(q));
+  });
+  currentPage = 1;
+  renderTimeline();
+}
+
+// ---------------- Render timeline (pagination)
+function renderTimeline(){
+  const container = document.getElementById("timelineContainer");
+  container.innerHTML = "";
+  const total = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  if(currentPage > totalPages) currentPage = totalPages;
+
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageData = filtered.slice(start, start + PAGE_SIZE);
+
+  if(pageData.length === 0){
+    container.innerHTML = `<div style="color:var(--muted);padding:18px;background:var(--card);border-radius:10px">No items matched.</div>`;
+  }
+
+  pageData.forEach(item=>{
+    const row = document.createElement("div");
+    row.className = "timeline-item";
+    const left = document.createElement("div");
+    left.className = "timeline-left";
+    left.innerHTML = `<a href="${item.pdf}" target="_blank" rel="noopener">${escapeHtml(item.title)}</a>
+                      <div class="timeline-meta">${item.date} • ${item.tags.join(", ")}</div>`;
+    const right = document.createElement("div");
+    right.innerHTML = `<a class="download-btn" href="${item.pdf}" target="_blank" rel="noopener">Open</a>`;
+    row.appendChild(left);
+    row.appendChild(right);
+    container.appendChild(row);
+  });
+
+  // pagination controls
+  const pageEl = document.getElementById("paginationControls");
+  pageEl.innerHTML = "";
+  const info = document.createElement("div");
+  info.style.color = "var(--muted)";
+  info.style.marginRight = "10px";
+  info.textContent = `Page ${currentPage} / ${totalPages}  •  ${total} items`;
+  pageEl.appendChild(info);
+
+  const prevBtn = document.createElement("button");
+  prevBtn.textContent = "Prev";
+  prevBtn.disabled = currentPage === 1;
+  prevBtn.addEventListener("click", ()=>{ currentPage = Math.max(1, currentPage-1); renderTimeline();});
+  pageEl.appendChild(prevBtn);
+
+  const nextBtn = document.createElement("button");
+  nextBtn.textContent = "Next";
+  nextBtn.disabled = currentPage === totalPages;
+  nextBtn.addEventListener("click", ()=>{ currentPage = Math.min(totalPages, currentPage+1); renderTimeline();});
+  pageEl.appendChild(nextBtn);
+
+  const topBtn = document.createElement("button");
+  topBtn.textContent = "Top";
+  topBtn.addEventListener("click", ()=> window.scrollTo({top:0, behavior:"smooth"}));
+  pageEl.appendChild(topBtn);
+}
+
+// ---------------- Utility: escapeHtml
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];});
+}
+
+// ---------------- Init: load manifest, render UI
+async function init(){
+  initPasswordUI();
+  renderTagFilters();
+  await loadManifest();
+  // Ensure descending by date
+  allData.sort((a,b)=> (b.date||"").localeCompare(a.date||""));
+  // filtered initially all
+  filtered = allData.slice();
+  renderPinned();
+  renderTimeline();
+  // search box handler
+  document.getElementById("searchBox").addEventListener("keyup", (e)=>{
+    if(e.key === "Enter") applyFilters();
+  });
+}
+
+// run
+init();
+</script>
+</body>
+</html>

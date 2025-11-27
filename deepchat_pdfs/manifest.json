@@ -1,0 +1,17 @@
+[
+  {
+    "date": "2025-11-27",
+    "title": "On magnon-phonon coupling",
+    "pdf": "deepchat_pdfs/20251127_magnon.pdf",
+    "tags": ["物理","神经"],
+    "pinned": true
+  },
+  {
+    "date": "2025-11-26",
+    "title": "ARPES: Matrix elements and spectra",
+    "pdf": "deepchat_pdfs/20251126_arpes.pdf",
+    "tags": ["物理"],
+    "pinned": false
+  }
+  /* 继续添加所有 deepchat 条目 (按 JSON 数组格式) */
+]
