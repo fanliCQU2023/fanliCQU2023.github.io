@@ -75,9 +75,18 @@
   <script>
     window.onload = function () {
       const overlay = document.getElementById("passwordOverlay");
+
+      // 若已验证过，则直接隐藏密码层
+      if (localStorage.getItem("beyondstory_pw_ok") === "true") {
+        overlay.style.display = "none";
+        return;
+      }
+
+      // 首次输入密码
       document.getElementById("pwButton").onclick = function () {
         const pw = document.getElementById("pwInput").value;
         if (pw === "spells2023") {
+          localStorage.setItem("beyondstory_pw_ok", "true"); // 记住已通过验证
           overlay.style.display = "none";
         } else {
           alert("Incorrect password.");
