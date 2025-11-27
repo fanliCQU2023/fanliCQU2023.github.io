@@ -139,7 +139,24 @@
 
 <body>
 
-<header>OurChat – SPELLs</header>
+<header>
+  <nav class="navbar glass">
+    <div class="logo">
+      <img src="img/logo.png" alt="SPELLs Logo" class="logo-img" />
+      SPELLs
+    </div>
+    <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="members.html">Members</a></li>
+        <li><a href="publications.html">Publications</a></li>
+        <li><a href="story.html">OurStory</a></li>
+        <li><a href="beyondstory.html">BeyondStory</a></li>
+        <li><a href="ourchat.html">DeepChat</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
 
 <!-- login screen -->
 <div id="login-box">
@@ -179,7 +196,7 @@
 /* --------------------------
    1. Password shared
 -------------------------- */
-const PASSWORD = "YOUR_PASSWORD_HERE"; // ← 修改为你的密码
+const PASSWORD = "spells2023"; // ← 修改为你的密码
 
 function checkPassword() {
     let p = document.getElementById("password").value;
