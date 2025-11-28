@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Story of SPELLs — A Short Tale</title>
   <meta name="description" content="The World of SPELLs — Spin, Photon, Electron, and Lattice told as a short story for video narration."/>
+
   <style>
     :root{
       --bg:#071026;
@@ -14,13 +15,32 @@
       --muted:#9fb6d6;
       --soft:#dceefd;
       --radius:18px;
-      --maxw:1000px;
+      --maxw:1100px;
       --gap:32px;
     }
-    html,body{height:100%;margin:0;font-family:Inter, "Helvetica Neue", Helvetica, Arial; background: radial-gradient(1200px 600px at 10% 10%, rgba(136,192,255,0.03), transparent), var(--bg); color:var(--soft); -webkit-font-smoothing:antialiased;}
-    .wrap{max-width:var(--maxw);margin:30px auto;padding:24px;box-sizing:border-box;}
-    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;}
-    .brand{display:flex;gap:12px;align-items:center}
+
+    html,body{
+      height:100%;margin:0;
+      font-family:Inter, "Helvetica Neue", Helvetica, Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(136,192,255,0.03), transparent), var(--bg);
+      color:var(--soft);
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .wrap{
+      max-width:var(--maxw);
+      margin:30px auto;
+      padding:24px;
+      box-sizing:border-box;
+      position:relative;
+      padding-right:380px; /* 给右侧歌词栏留空间 */
+    }
+
+    header{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:12px;margin-bottom:18px;
+    }
+
     h1{margin:0;font-size:28px;letter-spacing:0.6px}
     p.lead{margin:8px 0 0;color:var(--muted);font-size:14px}
 
@@ -41,8 +61,18 @@
       align-items:center;
       transition:transform .6s cubic-bezier(.2,.9,.2,1), box-shadow .4s;
     }
+
     .scene:hover{ transform:translateY(-6px); box-shadow:0 24px 60px rgba(3,8,20,0.6); }
-    .scene .icon{width:120px;height:120px;border-radius:14px;flex:0 0 120px;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;color:var(--bg);background:linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));filter:drop-shadow(0 8px 24px rgba(0,0,0,0.6));}
+
+    .scene .icon{
+      width:120px;height:120px;border-radius:14px;
+      flex:0 0 120px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:36px;font-weight:700;color:var(--bg);
+      background:linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+      filter:drop-shadow(0 8px 24px rgba(0,0,0,0.6));
+    }
+
     .scene .body{flex:1;min-width:0}
     .scene h2{margin:0 0 8px 0;font-size:20px;color:var(--accent)}
     .scene p{margin:0;color:var(--soft);line-height:1.6;font-size:15px;opacity:0.95}
@@ -53,158 +83,207 @@
     .electron .icon{background:linear-gradient(135deg,#a6fff6,#71e7ff); color:#00323a}
     .lattice .icon{background:linear-gradient(135deg,#c8ffb6,#8ef08a); color:#06360b}
 
-    .scene::after{content:"";position:absolute;right:-120px;top:-120px;width:320px;height:320px;border-radius:50%;background: radial-gradient(circle at center, rgba(136,192,255,0.06), transparent 40%);pointer-events:none;transition:opacity .6s;opacity:0.7;}
-    .scene.spin::after{ background: radial-gradient(circle at center, rgba(255,210,122,0.07), transparent 40%);}    
-    .scene.photon::after{ background: radial-gradient(circle at center, rgba(204,153,255,0.06), transparent 40%);}    
-    .scene.electron::after{ background: radial-gradient(circle at center, rgba(126,244,236,0.06), transparent 40%);}    
-    .scene.lattice::after{ background: radial-gradient(circle at center, rgba(168,255,163,0.06), transparent 40%);}    
+    /* Animation */
+    .scene,.final{opacity:0;transform:translateY(18px) scale(.995);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.9,.2,1);}
+    .visible{opacity:1;transform:translateY(0) scale(1);}
 
-    /* Final card */
-    .final{text-align:center;padding:40px;background:linear-gradient(180deg, rgba(255,255,255,0.017), rgba(255,255,255,0.01));border-radius:var(--radius);border:1px solid rgba(255,255,255,0.03);}
-    .final h3{color:var(--accent);margin:0 0 8px 0}
-    .final p{margin:0;color:var(--soft);line-height:1.7;font-size:16px}
+    /* ----------------- 右侧折叠歌词 Sidebar ----------------- */
 
-    .scene, .final{opacity:0; transform:translateY(18px) scale(.995); transition:opacity .9s ease, transform .9s cubic-bezier(.2,.9,.2,1); }
-    .visible{opacity:1; transform:translateY(0) scale(1);}
+    .lyrics-sidebar{
+      position:fixed;
+      top:40px;
+      right:20px;
+      width:300px;
+      height:80vh;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:16px;
+      box-shadow:0 8px 30px rgba(0,0,0,0.5);
+      backdrop-filter:blur(14px);
+      padding:20px;
+      box-sizing:border-box;
+      display:flex;
+      flex-direction:column;
+      transition: transform .45s ease;
+    }
 
-    /* Song section */
-    .song-section{margin-top:40px;padding:24px;border-radius:var(--radius);background:rgba(255,255,255,0.03);display:flex;gap:24px;box-shadow:0 8px 30px rgba(0,0,0,0.4);}    
-    .lyrics{flex:1;max-height:420px;overflow-y:auto;white-space:pre-line;line-height:1.6;font-size:15px;color:var(--soft);}    
-    audio{width:260px;height:42px;margin-top:12px;}
+    .lyrics-sidebar.collapsed{
+      transform: translateX(260px);
+    }
 
-    footer{margin-top:36px;color:var(--muted);font-size:13px;text-align:center;padding-bottom:30px}
+    .sidebar-toggle{
+      position:absolute;
+      left:-38px;
+      top:20px;
+      width:34px;height:34px;
+      border-radius:10px;
+      background:#111;
+      color:white;
+      border:none;
+      cursor:pointer;
+      font-size:16px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.4);
+    }
 
-    @media (max-width:880px){
-      .scene{flex-direction:column;align-items:flex-start;padding:20px}
-      .scene .icon{width:88px;height:88px;flex:0 0 88px;font-size:28px}
-      .song-section{flex-direction:column}
-      audio{width:100%}
+    .lyrics-title{font-size:16px;color:var(--accent);margin-bottom:10px}
+    audio{width:100%;margin-bottom:14px}
+
+    #lyrics-box{
+      flex:1;
+      overflow-y:auto;
+      padding-right:6px;
+    }
+
+    #lyrics-box p{
+      margin:10px 0;
+      opacity:0.6;
+      transition:.25s;
+      line-height:1.45;
+    }
+
+    #lyrics-box p.active{
+      opacity:1;
+      color:#00eaff;
+      font-weight:600;
+      transform:scale(1.02);
+    }
+
+    /* Mobile */
+    @media (max-width:960px){
+      .wrap{padding-right:0}
+      .lyrics-sidebar{
+        width:90%;
+        right:5%;
+        top:auto;
+        bottom:10px;
+        height:50vh;
+      }
+      .lyrics-sidebar.collapsed{
+        transform:translateY(55vh);
+      }
+      .sidebar-toggle{left:auto;right:10px}
     }
   </style>
 </head>
+
 <body>
   <div class="wrap" id="top">
+
+    <!-- header -->
     <header>
       <div class="brand">
         <div>
           <h1>Story of SPELLs</h1>
-          <p class="lead">A short, cinematic tale of Spin · Photon · Electron · Lattice — crafted for video narration.</p>
+          <p class="lead">A cinematic tale of Spin · Photon · Electron · Lattice.</p>
         </div>
       </div>
-      <div class="controls" aria-hidden="true">
-        <a class="btn secondary" href="index.html">Back Home</a>
+
+      <div class="controls">
+        <a style="color:var(--muted);text-decoration:none;font-size:14px" href="index.html">Back Home</a>
       </div>
     </header>
 
-    <!-- SONG SECTION -->
-    <section class="song-section">
-      <div style="flex:0 0 260px">
-        <h2 style="margin:0 0 10px 0;color:var(--accent)">Solid State of Mind — Song</h2>
-        <audio id="song" controls>
-          <source src="mp3/The solid states of mind.mp3" type="audio/mpeg">
-        </audio>
+    <!-- STORY CONTENT -->
+    <div class="story">
+
+      <div class="scene spin">
+        <div class="icon">S</div>
+        <div class="body">
+          <h2>Spin — 自旋的低语</h2>
+          <p>在量子材料的每一层间隙，自旋像风一样轻声摆动，它们之间的关联推动着磁性涌现。</p>
+        </div>
       </div>
 
-      <div class="lyrics" id="lyrics">
-[Verse 1]
-We dive into the lattice, where atoms love to sway,
-Electrons play their quantum games in bands that light the way.
-From Bloch waves to phonons, and Cooper pairs at night,
-We’re chasing phase transitions in superconducting light.
-
-[Chorus]
-In this solid state of mind, we learn to see what's real,
-From Fermi seas to crystal fields, and Dirac's massless zeal.
-Spin, charge, and symmetry, they all begin to bind,
-We’re dancing in the wonders of the solid state of mind.
-
-[Verse 2]
-Topological dreams, where edges freely roam,
-Graphene sings its silent song, and quasiparticles find home.
-Magnetic orders whisper in two dimensions thin,
-Every layer holds a story, and the future lies within.
-
-[Chorus]
-In this solid state of mind, we learn to see what's real,
-From Fermi seas to crystal fields, and Dirac's massless zeal.
-Spin, charge, and symmetry, they all begin to bind,
-We’re dancing in the wonders of the solid state of mind.
-
-[Bridge]
-ARPES scans the truth inside,
-Neutrons tell us how spins glide.
-We chase the broken symmetries—
-That build tomorrow’s memories.
-
-[Final Chorus]
-In this solid state of mind, our knowledge grows refined,
-We see the world in lattice form and time that’s redefined.
-From semiconductors’ glow to Mott’s resistive kind—
-We’re changing all the world, in this solid state of mind.
+      <div class="scene photon">
+        <div class="icon">P</div>
+        <div class="body">
+          <h2>Photon — 光子的瞬闪</h2>
+          <p>光子的跃迁打乱了电子的宁静，带来新的激发，也重构了体系的能量地形。</p>
+        </div>
       </div>
-    </section>
 
-    <main class="story" id="story">
-      <section class="scene visible" id="intro">
-        <div class="icon">✨</div>
+      <div class="scene electron">
+        <div class="icon">E</div>
         <div class="body">
-          <h2>Welcome — The World of SPELLs</h2>
-          <p>In the world of <strong>SPELLs</strong>, everything begins with a shimmer — a realm built upon the delicate layers of matter, where four ancient spirits dance and weave the rhythm of the quantum world.</p>
+          <h2>Electron — 电子的迁徙</h2>
+          <p>电子在能谷间穿梭，被自旋、光子与晶格的脉动牵引，书写着多体相互作用的篇章。</p>
         </div>
-      </section>
+      </div>
 
-      <section class="scene spin" id="spin">
-        <div class="icon">🌀</div>
+      <div class="scene lattice">
+        <div class="icon">L</div>
         <div class="body">
-          <h2>Spin — The Dancer of Memory</h2>
-          <p>On the layered stage, <em>Spin</em> twirls gracefully — each step a whisper of magnetism, each turn carrying invisible threads of information. We follow this dancer’s trail, learning how it feels the wind of signals, how it remembers every twist, and how, one day, it may teach materials to <em>think</em>.</p>
+          <h2>Lattice — 晶格的呼吸</h2>
+          <p>晶格振动像缓慢的潮汐，决定了材料的结构与稳定，也左右着电子与自旋的命运。</p>
         </div>
-      </section>
+      </div>
 
-      <section class="scene photon" id="photon">
-        <div class="icon">💫</div>
-        <div class="body">
-          <h2>Photon — The Messenger of Light</h2>
-          <p>Above the stage flies <em>Photon</em>, the restless traveler. It paints colors across the layers, awakening hidden symphonies within. When light meets matter, stories unfold — flashes of brilliance that reveal how the universe speaks through glow and shadow. We chase those beams to design devices that can see, sense, and speak in <em>light</em>.</p>
-        </div>
-      </section>
+    </div><!-- story end -->
 
-      <section class="scene electron" id="electron">
-        <div class="icon">⚡</div>
-        <div class="body">
-          <h2>Electron — The Dreamer of Worlds</h2>
-          <p>Deep within the layers, <em>Electron</em> builds invisible cities — corridors of energy, bridges of topology, where crowds of electrons dance in perfect synchrony or rebel into chaos. By listening to their dreams, we uncover how matter becomes conductive, correlated, or topological — how <em>order and mystery coexist</em>.</p>
-        </div>
-      </section>
+  </div><!-- wrap end -->
 
-      <section class="scene lattice" id="lattice">
-        <div class="icon">🌍</div>
-        <div class="body">
-          <h2>Lattice — The Architect of Harmony</h2>
-          <p>And beneath it all breathes <em>Lattice</em>, the silent architect who shapes the ground where others move. Its vibrations ripple through the world, whispering to spins and electrons, guiding their moods and songs. Sometimes, a gentle tremor becomes a revolution — and new properties emerge from the quiet hum of atoms.</p>
-        </div>
-      </section>
+  <!-- ----------------- 右侧可折叠歌词 Sidebar ----------------- -->
+  <aside class="lyrics-sidebar" id="lyricsSidebar">
 
-      <section class="final" id="final">
-        <h3>Together — A Living World</h3>
-        <p>Together, these four spirits — <strong>Spin</strong>, <strong>Photon</strong>, <strong>Electron</strong>, and <strong>Lattice</strong> — build a living world where motion becomes meaning, and materials begin to dream. That world is our laboratory, and we are simply its storytellers.</p>
-        <p style="margin-top:14px;font-style:italic;color:var(--muted)">In front of the giant men in history, we choose to enjoy this journey as children — picking the shells at the seaside of science, each one shimmering with a story of its own. 🌊</p>
-      </section>
-    </main>
+    <button class="sidebar-toggle" id="toggleBtn">♪</button>
 
-    <footer>
-      © 2025 SPELLs Group · <a href="index.html" style="color:var(--muted);text-decoration:none">spells.top</a>
-    </footer>
-  </div>
+    <div class="lyrics-title">Layers of Light — OST</div>
 
+    <audio id="music" controls src="assets/music/layers_of_light.mp3"></audio>
+
+    <div id="lyrics-box">
+
+      <!-- 歌词示例，可替换 -->
+      <p data-time="0">光在层间游走，自旋随之颤动</p>
+      <p data-time="4">晶格的脉搏敲响电子的节奏</p>
+      <p data-time="8">耦合在暗处编织新的量子纹理</p>
+      <p data-time="13">每个粒子都在诉说未完成的故事</p>
+      <p data-time="18">当光子闪过，能带重新排列</p>
+      <p data-time="23">超导与拓扑的影子渐渐清晰</p>
+      <p data-time="30">这就是 SPELLs 的世界：交织 · 涌现 · 共鸣</p>
+
+    </div>
+  </aside>
+
+  <footer>
+    <p style="text-align:center;color:var(--muted);margin-top:40px">© 2025 SPELLs Group</p>
+  </footer>
+
+  <!-- ------------ JS：进入视图渐显 + 歌词自动滚动 + Sidebar 折叠 ------------ -->
   <script>
-    const scenes = Array.from(document.querySelectorAll('.scene, .final'));
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(en => {
-        if(en.isIntersecting) en.target.classList.add('visible');
+    /* Intersection fade-in animation */
+    const els = document.querySelectorAll('.scene');
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('visible');});
+    },{threshold:.2});
+    els.forEach(el=>io.observe(el));
+
+    /* Sidebar toggle */
+    const sidebar = document.getElementById("lyricsSidebar");
+    document.getElementById("toggleBtn").onclick = () => {
+      sidebar.classList.toggle("collapsed");
+    };
+
+    /* Lyrics sync */
+    const audio = document.getElementById("music");
+    const lines = document.querySelectorAll("#lyrics-box p");
+    const box = document.getElementById("lyrics-box");
+
+    audio.addEventListener("timeupdate", () => {
+      let t = audio.currentTime;
+
+      lines.forEach((line, i) => {
+        const start = parseFloat(line.dataset.time);
+        const next = i < lines.length - 1 ? parseFloat(lines[i + 1].dataset.time) : 9999;
+
+        if (t >= start && t < next) {
+          lines.forEach(l => l.classList.remove("active"));
+          line.classList.add("active");
+          box.scrollTop = line.offsetTop - box.clientHeight / 2;
+        }
       });
-    }, {threshold: 0.18});
-    scenes.forEach(s => io.observe(s));
+    });
   </script>
+
 </body>
 </html>
