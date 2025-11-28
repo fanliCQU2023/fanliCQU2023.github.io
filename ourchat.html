@@ -309,10 +309,10 @@ function render(){
         let div = document.createElement("div");
         div.className = "card";
         div.innerHTML = `
-            <div class="card-title">${d.title}</div>
-            <div style="color:#999;margin:4px 0;">${d.date}</div>
+            <a class="card-title" href="${d.pdf}" target="_blank">
+              ${d.title}
+            </a>
             <div class="tags">${d.tags.join(" / ")}</div>
-            <a href="${d.pdf}" target="_blank">打开 PDF</a>
         `;
         list.appendChild(div);
     });
