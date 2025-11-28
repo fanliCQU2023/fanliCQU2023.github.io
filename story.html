@@ -78,11 +78,14 @@
     .scene p{margin:0;color:var(--soft);line-height:1.6;font-size:15px;opacity:0.95}
 
     /* Spirit color styles */
+    .welcome .icon {    background: linear-gradient(135deg, #ffe8c2, #ffd29a);    color: #4a2900;}
     .spin .icon{background:linear-gradient(135deg,#ffd27a,#ffb86b); color:#2b1a00}
     .photon .icon{background:linear-gradient(135deg,#ffd6ff,#caa4ff); color:#2b005b}
     .electron .icon{background:linear-gradient(135deg,#a6fff6,#71e7ff); color:#00323a}
     .lattice .icon{background:linear-gradient(135deg,#c8ffb6,#8ef08a); color:#06360b}
-
+    .layered .icon {    background: linear-gradient(135deg, #e4f1ff, #b7d4ff);    color: #002b5c;}
+    .perspectives .icon {    background: linear-gradient(135deg, #fbe6ff, #e2c6ff);    color: #3f006b;}
+ 
     /* Animation */
     .scene,.final{opacity:0;transform:translateY(18px) scale(.995);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.9,.2,1);}
     .visible{opacity:1;transform:translateY(0) scale(1);}
@@ -185,52 +188,60 @@
 
     <!-- STORY CONTENT -->
     <div class="story">
-      <div class="scene spin">
-        <div class="icon">✨</div>
+      <div class="scene welcome">
+        <div class="icon">We</div>
         <div class="body">
           <h2>Welcome — The World of SPELLs</h2>
-          <p>In the world of <strong>SPELLs</strong>, everything begins with a shimmer — a realm built upon the delicate layers of matter, where four ancient spirits dance and weave the rhythm of the quantum world.</p>
+          <p>In the world of <strong>SPELLs</strong>, everything begins with a shimmer — a realm woven from delicate layers of matter, where four ancient spirits shape the rhythm of the quantum world.</p>
+          <p>Here, curiosity is our compass. Each question becomes a doorway, each experiment a step deeper into the unknown. We enter not as conquerors, but as listeners, ready to hear the quiet stories hidden within materials.</p>
         </div>
       </div>
-  
       <div class="scene spin">
         <div class="icon">S</div>
         <div class="body">
-          <h2>Spin — The Dancer of Memory</h2> 
-          <p>On the layered stage, <em>Spin</em> twirls gracefully — each step a whisper of magnetism, each turn carrying invisible threads of information. We follow this dancer’s trail, learning how it feels the wind of signals, how it remembers every twist, and how, one day, it may teach materials to <em>think</em>.</p>
+          <h2>Spin — The Dancer of Memory and Magnetism</h2>
+          <p>On the layered stage, <strong>Spin</strong> dances first — graceful, alert, its every turn carrying a whisper of magnetism.</p>
+          <p>Spin remembers. Each twist encodes information written onto the quantum fabric. By following this dancer’s motion, we uncover how magnetism forms, how signals flow, and how materials may one day learn to <em>think</em>.</p>
         </div>
       </div>
-
       <div class="scene photon">
         <div class="icon">P</div>
         <div class="body">
-          <h2>Photon — The Messenger of Light</h2> 
-          <p>Above the stage flies <em>Photon</em>, the restless traveler. It paints colors across the layers, awakening hidden symphonies within. When light meets matter, stories unfold — flashes of brilliance that reveal how the universe speaks through glow and shadow. We chase those beams to design devices that can see, sense, and speak in <em>light</em>.</p>
+          <h2>Photon — The Wanderer of Light and Symmetry</h2>
+          <p>High above glides <strong>Photon</strong>, the restless traveler. It paints color onto the layers, illuminating symmetries and awakening hidden harmonies.</p>
+          <p>When light meets matter, stories unfold — transitions flash, resonances bloom, and the universe reveals its secrets through glow and shadow.</p>
         </div>
       </div>
-
       <div class="scene electron">
         <div class="icon">E</div>
         <div class="body">
-          <h2>Electron — The Dreamer of Worlds</h2> 
-          <p>Deep within the layers, <em>Electron</em> builds invisible cities — corridors of energy, bridges of topology, where crowds of electrons dance in perfect synchrony or rebel into chaos. By listening to their dreams, we uncover how matter becomes conductive, correlated, or topological — how <em>order and mystery coexist</em>.</p>
+          <h2>Electron — The Architect of Topological Cities</h2>
+          <p>Deep within the stacked layers, <strong>Electron</strong> constructs invisible cities — corridors of energy, bridges of topology, and bustling avenues of correlated motion.</p>
+          <p>Sometimes they align into perfect orchestra lines — superconductivity. Sometimes they rebel into complexity. By listening to their dreams, we learn how order and mystery coexist.</p>
         </div>
       </div>
-
       <div class="scene lattice">
         <div class="icon">L</div>
         <div class="body">
-          <h2>Lattice — The Architect of Harmony</h2> 
-          <p>And beneath it all breathes <em>Lattice</em>, the silent architect who shapes the ground where others move. Its vibrations ripple through the world, whispering to spins and electrons, guiding their moods and songs. Sometimes, a gentle tremor becomes a revolution — and new properties emerge from the quiet hum of atoms.</p>
+          <h2>Lattice — The Quiet Architect Beneath All Motion</h2>
+          <p>Beneath everything breathes <strong>Lattice</strong>, the silent architect shaping the terrain on which all other spirits move.</p>
+          <p>Its vibrations ripple outward, whispering to spins and electrons, guiding their moods and songs. Sometimes a subtle tremor becomes a revolution, birthing entirely new phases of matter.</p>
         </div>
       </div>
-
-      <div class="scene lattice">
-        <div class="icon">🌍</div>
+      <div class="scene layered">
+        <div class="icon">L</div>
         <div class="body">
-          <h3>Together — A Living World</h3> 
-          <p>Together, these four spirits — <strong>Spin</strong>, <strong>Photon</strong>, <strong>Electron</strong>, and <strong>Lattice</strong> — build a living world where motion becomes meaning, and materials begin to dream. That world is our laboratory, and we are simply its storytellers.</p> 
-          <p style="margin-top:14px;font-style:italic;color:var(--muted)">In front of the giant men in history, we choose to enjoy this journey as children — picking the shells at the seaside of science, each one shimmering with a story of its own. 🌊</p>  
+          <h2>Layered Systems — Where the Four Spirits Converge</h2>
+          <p>Layered systems are the realm where all four spirits meet. Each layer is a page; stacking them writes a new chapter.</p>
+          <p>Twist the layers gently, and moiré landscapes emerge — reshaping spins, slowing electrons, tuning photons, and guiding the heartbeat of the lattice. These are worlds responsive to design, alive with possibilities.</p>
+        </div>
+      </div>
+      <div class="scene perspectives">
+        <div class="icon">s</div>
+        <div class="body">
+          <h2>Perspectives — Children at the Shore of Science</h2>
+          <p>Together, these spirits — <strong>Spin</strong>, <strong>Photon</strong>, <strong>Electron</strong>, and <strong>Lattice</strong> — build a world where motion becomes meaning and materials begin to dream.</p>
+          <p>We walk this path as children before the giants of history, picking shells on the seaside of science, each one shimmering with its own story.</p>
         </div>
       </div>
     </div><!-- story end -->
