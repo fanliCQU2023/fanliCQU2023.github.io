@@ -257,9 +257,10 @@ function renderFeatured() {
         let div = document.createElement("div");
         div.className = "card";
         div.innerHTML = `
-            <div class="card-title">${d.title}</div>
+            <a class="card-title" href="${d.pdf}" target="_blank">
+              ${d.title}
+            </a>
             <div class="tags">${d.tags.join(" / ")}</div>
-            <a href="${d.pdf}" target="_blank">打开 PDF</a>
         `;
         box.appendChild(div);
     });
