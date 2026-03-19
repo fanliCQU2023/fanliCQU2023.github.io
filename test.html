@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实验室成员位置实时看板</title>
+    <style>
+        :root { --primary: #007bff; --bg: #f4f7f6; }
+        body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; }
+        .container { width: 100%; max-width: 450px; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        h2 { text-align: center; color: #333; margin-bottom: 25px; }
+        
+        /* 登录区域 */
+        #login-section { text-align: center; background: #fff; padding: 10px; }
+        .input-group { display: flex; gap: 10px; margin-bottom: 10px; }
+        input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
+        input:focus { border-color: var(--primary); }
+        
+        /* 地点选择区域 */
+        .location-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; display: none; margin-bottom: 20px; }
+        .btn { padding: 15px; border: 1.5px solid var(--primary); background: white; color: var(--primary); border-radius: 10px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .btn:hover { background: var(--primary); color: white; }
+        .btn-login { background: var(--primary); color: white; border: none; padding: 0 20px; }
+
+        /* 实时看板区域 */
+        .board { margin-top: 20px; border-top: 2px solid #f0f0f0; padding-top: 15px; }
+        .status-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #f9f9f9; animation: fadeIn 0.5s ease; }
+        .user-name { font-weight: bold; color: #444; }
+        .user-loc { color: white; background: #28a745; padding: 4px 12px; border-radius: 20px; font-size: 13px; box-shadow: 0 2px 5px rgba(40,167,69,0.2); }
+        .time-label { color: #999; font-size: 11px; display: block; text-align: right; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📍 成员实时位置看板</h2>
+
+    <div id="login-section">
+        <div class="input-group">
+            <input type="text" id="username" placeholder="输入你的真实姓名...">
+            <button class="btn btn-login" onclick="doLogin()">进入</button>
+        </div>
+        <p style="font-size: 12px; color: #999;">请先输入姓名以启用地点选择</p>
+    </div>
+
+    <div id="location-section" class="location-grid">
+        <button class="btn" onclick="selectLoc('量子测试中心')">量子测试中心</button>
+        <button class="btn" onclick="selectLoc('分析测试中心')">分析测试中心</button>
+        <button class="btn" onclick="selectLoc('科学中心')">科学中心</button>
+        <button class="btn" onclick="selectLoc('休息区/外出')">休息区/外出</button>
+    </div>
+
+    <div class="board">
+        <h3 style="font-size: 15px; color: #666; margin-bottom: 10px;">👥 当前全员状态：</h3>
+        <div id="status-list">
+            <div style="text-align:center; color:#ccc; padding:20px;">正在连接云端数据库...</div>
+        </div>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+    // ==========================================
+    // 第一步：在此处粘贴你的 Firebase 配置
+    // ==========================================
+    const firebaseConfig = {
+        apiKey: "AIzaSyDh3sUuXQm28NolWbjnEZH0RVPmqjXPR0Y",
+        authDomain: "real-time-location-e5d6a.firebaseapp.com",
+        projectId: "real-time-location-e5d6a",
+        storageBucket: "real-time-location-e5d6a.firebasestorage.app",
+        messagingSenderId: "582710674941",
+        appId: "1:582710674941:web:3f2fd4f7da9572414fc594",
+        measurementId: "G-4MFCN2Z8Z3"
+    };
+
+    // 初始化 Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // 登录逻辑
+    window.doLogin = function() {
+        const nameStr = document.getElementById('username').value.trim();
+        if(nameStr === "") return alert("姓名不能为空！");
+        
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('location-section').style.display = 'grid';
+        console.log("用户已就绪:", nameStr);
+    };
+
+    // 签到逻辑 (写入数据库)
+    window.selectLoc = function(locName) {
+        const user = document.getElementById('username').value;
+        
+        db.collection("checkins").add({
+            user: user,
+            location: locName,
+            time: firebase.firestore.FieldValue.serverTimestamp() // 记录服务器时间
+        })
+        .then(() => console.log("位置已更新至云端"))
+        .catch(err => {
+            console.error(err);
+            alert("提交失败，请检查 Firebase 数据库的 Rules 是否已设为 true");
+        });
+    };
+
+    // 实时监听逻辑 (读取数据库)
+    // 它会盯着 checkins 集合，按时间排序，只取最新的 15 条
+    db.collection("checkins")
+      .orderBy("time", "desc")
+      .limit(15)
+      .onSnapshot((snapshot) => {
+          const listDiv = document.getElementById('status-list');
+          listDiv.innerHTML = ""; // 清空旧数据
+          
+          if (snapshot.empty) {
+              listDiv.innerHTML = '<div style="text-align:center; color:#ccc; padding:20px;">暂无记录</div>';
+              return;
+          }
+
+          snapshot.forEach((doc) => {
+              const data = doc.data();
+              const dateObj = data.time ? data.time.toDate() : new Date();
+              const timeStr = dateObj.getHours() + ":" + String(dateObj.getMinutes()).padStart(2, '0');
+
+              listDiv.innerHTML += `
+                  <div class="status-item">
+                      <span class="user-name">${data.user}</span>
+                      <div>
+                          <span class="user-loc">${data.location}</span>
+                          <span class="time-label">${timeStr}</span>
+                      </div>
+                  </div>
+              `;
+          });
+      });
+</script>
+
+</body>
+</html>
