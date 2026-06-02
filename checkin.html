@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPELLs 成员位置实时看板</title>
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <style>
+        :root { 
+            --bg-page: #0b1221; /* 深邃蓝背景 */
+            --bg-card: rgba(30, 41, 59, 0.6); /* 半透明暗色卡片 */
+            --primary-accent: #93c5fd; /* 图片中的浅蓝色按钮颜色 */
+            --primary-accent-hover: #7dd3fc;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; 
+            background: var(--bg-page); 
+            background-image: radial-gradient(circle at top, #162440 0%, transparent 50%); /* 顶部微光效果 */
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 20, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-img {
+            height: 40px;
+            margin-right: 0.3rem;
+            vertical-align: middle;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #e0e0e0;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #88c0ff;
+        }
+
+        .checkin-page {
+            min-height: calc(100vh - 72px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 0.75rem 1rem;
+            }
+        }
+
+        .container { 
+            width: 100%; 
+            max-width: 480px; 
+            background: var(--bg-card); 
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 35px 25px; 
+            border-radius: 24px; 
+            border: 1px solid var(--border-color);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); 
+        }
+
+        /* 标题区域 */
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2 { 
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin: 0 0 8px 0; 
+            color: #ffffff;
+        }
+        .subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+        
+        /* 登录区域 */
+        #login-section { text-align: center; margin-bottom: 20px; }
+        .input-group { 
+            display: flex; 
+            gap: 12px; 
+            margin-bottom: 12px; 
+            background: rgba(15, 23, 42, 0.6);
+            padding: 6px;
+            border-radius: 99px;
+            border: 1px solid var(--border-color);
+        }
+        input { 
+            flex: 1; 
+            padding: 12px 20px; 
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 15px;
+            outline: none; 
+        }
+        input::placeholder { color: #64748b; }
+        
+        /* 全局按钮基础样式 */
+        .btn { 
+            padding: 12px 24px; 
+            border-radius: 99px; /* 圆角药丸形 */
+            cursor: pointer; 
+            font-weight: 600; 
+            font-size: 14px;
+            transition: all 0.3s ease; 
+        }
+        
+        /* 登录按钮 */
+        .btn-login { 
+            background: var(--primary-accent); 
+            color: #0b1221; /* 深色文字 */
+            border: none; 
+            box-shadow: 0 4px 14px rgba(147, 197, 253, 0.3);
+        }
+        .btn-login:hover { 
+            background: var(--primary-accent-hover); 
+            transform: translateY(-1px);
+        }
+
+        /* 地点选择区域 */
+        .location-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+            display: none; 
+            margin-bottom: 30px; 
+        }
+        .btn-loc {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+        .btn-loc:hover { 
+            background: rgba(255, 255, 255, 0.1); 
+            border-color: rgba(255,255,255,0.3);
+        }
+        .btn-loc.active {
+            border: 1px solid var(--primary-accent);
+            background: rgba(147, 197, 253, 0.1);
+            color: var(--primary-accent);
+            box-shadow: 0 0 15px rgba(147, 197, 253, 0.15);
+        }
+
+        /* 实时看板区域 */
+        .board { margin-top: 10px; }
+        .board h3 {
+            font-size: 14px; 
+            color: var(--text-muted); 
+            margin-bottom: 15px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .board h3::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #10b981; /* 绿灯常亮表示在线 */
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+        }
+
+        .status-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 16px; 
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            margin-bottom: 10px; 
+            border-radius: 16px; 
+            transition: all 0.3s ease; 
+            animation: fadeIn 0.5s ease; 
+        }
+        .status-item:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(255,255,255,0.2);
+        }
+        .user-name { 
+            font-weight: 600; 
+            color: #ffffff; 
+            font-size: 16px;
+        }
+        
+        /* 标签样式：暗黑模式下的发光标签 */
+        .user-loc { 
+            padding: 4px 12px; 
+            border-radius: 99px; 
+            font-size: 12px; 
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 4px;
+        }
+        .time-label { 
+            color: var(--text-muted); 
+            font-size: 11px; 
+            display: block; 
+            text-align: right; 
+        }
+
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        /* 加载中提示 */
+        .loading-text {
+            text-align: center; 
+            color: var(--text-muted); 
+            padding: 30px 0;
+            font-size: 14px;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar glass">
+        <div class="logo">
+            <img src="img/logo.png" alt="SPELLs Logo" class="logo-img" />
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="checkin.html">Checkin</a></li>
+            <li><a href="research.html">Research</a></li>
+            <li><a href="members.html">Members</a></li>
+            <li><a href="publications.html">Publications</a></li>
+            <li><a href="story.html">OurStory</a></li>
+            <li><a href="beyondstory.html">BeyondStory</a></li>
+            <li><a href="ourchat.html">DeepChat</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="checkin-page">
+<div class="container">
+    <div class="header-section">
+        <h2>SPELLs Group</h2>
+        <p class="subtitle">Spin · Photon · Electron · Lattice in Layered Systems</p>
+    </div>
+
+    <div id="login-section">
+        <div class="input-group">
+            <input type="text" id="username" placeholder="输入真实姓名以启用面板...">
+            <button class="btn btn-login" onclick="doLogin()">Enter</button>
+        </div>
+    </div>
+
+    <div id="location-section" class="location-grid">
+        <button class="btn btn-loc" onclick="selectLoc('量子测试中心', this)">量子测试中心</button>
+        <button class="btn btn-loc" onclick="selectLoc('分析测试中心', this)">分析测试中心</button>
+        <button class="btn btn-loc" onclick="selectLoc('科学中心', this)">科学中心</button>
+        <button class="btn btn-loc" onclick="selectLoc('休息区/外出', this)">休息区/外出</button>
+    </div>
+
+    <div class="board">
+        <h3>当前全员状态</h3>
+        <div id="status-list">
+            <div class="loading-text">正在同步云端数据...</div>
+        </div>
+    </div>
+</div>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+    // Firebase 配置 (原样保留)
+    const firebaseConfig = {
+        apiKey: "AIzaSyDh3sUuXQm28NolWbjnEZH0RVPmqjXPR0Y",
+        authDomain: "real-time-location-e5d6a.firebaseapp.com",
+        projectId: "real-time-location-e5d6a",
+        storageBucket: "real-time-location-e5d6a.firebasestorage.app",
+        messagingSenderId: "582710674941",
+        appId: "1:582710674941:web:3f2fd4f7da9572414fc594",
+        measurementId: "G-4MFCN2Z8Z3"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // 登录逻辑
+    window.doLogin = function() {
+        const nameStr = document.getElementById('username').value.trim();
+        if(nameStr === "") return alert("请输入姓名！");
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('location-section').style.display = 'grid';
+    };
+
+    // 适配暗色模式的地点颜色映射 (采用半透明背景 + 彩色边框及文字)
+    function getColorClass(loc) {
+        if (loc.includes('量子')) return 'background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);'; // 科技蓝
+        if (loc.includes('分析')) return 'background: rgba(192, 132, 252, 0.15); color: #c084fc; border: 1px solid rgba(192, 132, 252, 0.3);'; // 紫色
+        if (loc.includes('科学')) return 'background: rgba(45, 212, 191, 0.15); color: #2dd4bf; border: 1px solid rgba(45, 212, 191, 0.3);'; // 青绿
+        return 'background: rgba(148, 163, 184, 0.15); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.3);'; // 灰色
+    }
+
+    // 签到逻辑
+    window.selectLoc = function(locName, btnElement) {
+        const user = document.getElementById('username').value;
+        
+        // UI 交互：移除其他按钮的高亮，给当前按钮加上 active 类
+        const buttons = document.querySelectorAll('.btn-loc');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        if(btnElement) btnElement.classList.add('active');
+        
+        // 写入数据库
+        db.collection("checkins").doc(user).set({
+            user: user,
+            location: locName,
+            time: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(() => console.log("状态已更新"))
+        .catch(err => console.error("错误:", err));
+    };
+
+    // 实时监听
+    db.collection("checkins").orderBy("time", "desc").onSnapshot((snapshot) => {
+        const listDiv = document.getElementById('status-list');
+        listDiv.innerHTML = "";
+        
+        if (snapshot.empty) {
+            listDiv.innerHTML = `<div class="loading-text">暂无成员状态记录</div>`;
+            return;
+        }
+
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            const dateObj = data.time ? data.time.toDate() : new Date();
+            const timeStr = dateObj.getHours() + ":" + String(dateObj.getMinutes()).padStart(2, '0');
+            
+            const bgStyle = getColorClass(data.location);
+
+            listDiv.innerHTML += `
+                <div class="status-item">
+                    <span class="user-name">${data.user}</span>
+                    <div style="text-align: right;">
+                        <span class="user-loc" style="${bgStyle}">${data.location}</span>
+                        <span class="time-label">${timeStr} 更新</span>
+                    </div>
+                </div>
+            `;
+        });
+    });
+</script>
+
+</body>
+</html>
