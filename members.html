@@ -5,18 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Members | SPELLs Group</title>
   <link rel="stylesheet" href="./assets/css/style.css" />
+  <style>
+    .member-section { max-width: 1200px; margin: 0 auto 3rem; padding: 0 1.5rem; }
+    .member-section h2 { margin-bottom: 1.5rem; color: var(--mpi-green); }
+    .members-grid { padding-top: 0; }
+    .member-card--placeholder .member-photo { object-fit: contain; padding: 1.25rem; background: var(--mpi-green-light); }
+    .name-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .75rem 1.5rem; list-style: none; padding: 0; margin: 0; }
+    .name-list li { padding: .8rem 1rem; border: 1px solid var(--border-soft); border-radius: 10px; background: rgba(255,255,255,.74); color: var(--text-main); }
+    .alumni-list li { display: flex; justify-content: space-between; gap: 1rem; }
+    .degree { color: var(--text-secondary); font-size: .92rem; }
+    @media (max-width: 640px) { .alumni-list li { display: block; } .degree { display: block; margin-top: .25rem; } }
+  </style>
 </head>
 <body>
   <header>
     <nav class="navbar glass">
-      <div class="logo">
-        <img src="img/logo.png" alt="SPELLs Logo" class="logo-img" />
-      </div>
+      <div class="logo"><img src="img/logo.png" alt="SPELLs Logo" class="logo-img" /></div>
       <ul class="nav-links">
-        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="index.html">Home</a></li>
         <li><a href="checkin.html">Checkin</a></li>
         <li><a href="research.html">Research</a></li>
-        <li><a href="members.html">Members</a></li>
+        <li><a href="members.html" class="active">Members</a></li>
         <li><a href="publications.html">Publications</a></li>
         <li><a href="story.html">OurStory</a></li>
         <li><a href="beyondstory.html">BeyondStory</a></li>
@@ -26,140 +35,60 @@
     </nav>
   </header>
 
-  <section class="page-header">
-    <h1>Group Members</h1>
-  </section>
+  <section class="page-header"><h1>Group Members</h1></section>
 
-  <section class="members-grid">
-    <div class="member-card">
-      <img src="img/Fan.jpg" alt="Fan Li" class="member-photo" />
-      <div class="member-info">
-        <h3>Fan Li</h3>
-        <p>Professor, School of Physics, Chongqing University</p>
-        <p>Research interests: Low-dimensional materials and novel spintronics devices.</p>
-        <p>
-          <a href="https://phys.cqu.edu.cn/info/1214/5997.htm" target="_blank">个人主页</a>
-        </p>
-        <p>
-          <a href="https://scholar.google.de/citations?hl=en&user=-YrqPJIAAAAJ&view_op=list_works&sortby=pubdate" target="_blank">Google Scholar</a>
-        </p>
+  <section class="member-section">
+    <h2>Teacher</h2>
+    <div class="members-grid">
+      <div class="member-card">
+        <img src="img/Fan.jpg" alt="Fan Li" class="member-photo" />
+        <div class="member-info">
+          <h3>Fan Li</h3>
+          <p>Professor, School of Physics, Chongqing University</p>
+          <p>Research interests: Low-dimensional materials and novel spintronics devices.</p>
+          <p><a href="https://phys.cqu.edu.cn/info/1214/5997.htm" target="_blank" rel="noopener">Personal Homepage</a></p>
+          <p><a href="https://scholar.google.de/citations?hl=en&user=-YrqPJIAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" rel="noopener">Google Scholar</a></p>
+        </div>
       </div>
-    </div>
-    <div class="member-card">
-      <img src="img/Zhu.jpg" alt="Zhu Yang" class="member-photo" />
-      <div class="member-info">
-        <h3>Zhu Yang</h3>
-        <p>Ph.D. student</p>
-        <p>Working on multiferroic thin film and magnon devices.</p>
-      </div>
-    </div>
-    
-    <div class="member-card">
-      <img src="img/student.jpg" alt="Hongming Liang" />
-      <h3>Hongming Liang</h3>
-      <p>Ph.D. student</p>
-      <p>Working on altermagnetic thin film and SOT devices.</p>
-    </div>
-    <div class="member-card">
-      <img src="img/Ting.jpg" alt="Ting" class="member-photo" />
-      <div class="member-info">
-        <h3>Ting Yan</h3>
-        <p>Ph.D. student</p>
-        <p>Working on magnon-phonon coupling in topological materials.</p>
-      </div>
-    </div>
-    <div class="member-card">
-      <img src="img/Qiao.jpg" alt="Qiao" class="member-photo" />
-      <div class="member-info">
-        <h3>Qiao Tang</h3>
-        <p>M.Sc. Student</p>
-        <p>Focusing on ion-intercalated van der Waals materials and in-situ gating devices.</p>
-      </div>
-    </div>
-    <div class="member-card">
-      <img src="img/Haonan.jpg" alt="Haonan" class="member-photo" />
-      <div class="member-info">
-        <h3>Haonan Luo</h3>
-        <p>M.Sc. Student</p>
-        <p>Focusing on freestanding magnetic oxides and spintronic devices.</p>
-      </div>
-    </div>
-    <div class="member-card">
-      <img src="img/Wenling.jpg" alt="Wenling" class="member-photo" />
-      <div class="member-info">
-        <h3>Wenling Qin</h3>
-        <p>M.Sc. Student</p>
-        <p>Focusing on freestanding superconducting oxides and spintrnic devices.</p>
-      </div>
-    </div>  
-    <div class="member-card">
-      <img src="img/Qiannan.jpg" alt="Qiannan" class="member-photo" />
-      <div class="member-info">
-        <h3>Qiannan Liu</h3>
-        <p>Undergraduate Students</p>
-        <p>Studying about DFT calculations of altermagnetism.</p>
-      </div>
-    </div>      
-    <div class="member-card">
-      <img src="img/Xuran.jpg" alt="Xuran" class="member-photo" />
-      <div class="member-info">
-        <h3>Xuran Tao</h3>
-        <p>Undergraduate Students</p>
-        <p>Studying about DFT calculations of 2D magnetism.</p>
-      </div>
-    </div>  
-    <div class="member-card">
-      <img src="img/student.jpg" alt="Ruocheng Yang" />
-      <h3>Ruocheng Yang</h3>
-      <p>Undergraduate Students</p>
-      <p>Studying about Raman analysis of 2D materials.</p>
-    </div>
-    <div class="member-card">
-      <img src="img/student.jpg" alt="Yuxuan Zhou" />
-      <h3>Yuxuan Zhou</h3>
-      <p>Undergraduate Students</p>
-      <p>Studying about fabrication of 2D heterostructures.</p>
-    </div>
-    <div class="member-card">
-      <img src="img/student.png" alt="Zhenyang Hong" />
-      <h3>Zhenyang Hong</h3>
-      <p>Undergraduate Students</p>
-      <p>Studying about 2D superconducting devices.</p>
-    </div>
-    <div class="member-card">
-      <img src="img/student.png" alt="Jinyang Gan" />
-      <h3>Jinyang Gan</h3>
-      <p>Undergraduate Students</p>
-      <p>Studying about phonon calculations of 2D materials.</p>
-    </div>
-    <div class="member-card">
-      <img src="img/student.png" alt="Zehao Yuan" />
-      <h3>Zehao Yuan</h3>
-      <p>Undergraduate Students</p>
-      <p>Studying about in-situ optical control of magnetism.</p>
-    </div>
-    <div class="member-card">
-      <img src="img/student.png" alt="Peiyao Lin" />
-      <h3>Peiyao Lin</h3>
-      <p>Undergraduate Students</p>
-      <p>Studying about in-situ gating control of magnetism.</p>
-    </div>
-    <div class="member-card">
-      <img src="img/student.png" alt="Haoran Yang" />
-      <h3>Haoran Yang</h3>
-      <p>Undergraduate Students</p>
-      <p>Studying about micromagentic simulations</p>
-    </div>
-    <div class="member-card">
-      <img src="img/student.png" alt="Dandan Zhang" />
-      <h3>Dandan Zhang</h3>
-      <p>Undergraduate Students</p>
-      <p>Studying about 2D spintronic devices.</p>
     </div>
   </section>
 
-  <footer>
-    <p>© 2025 SPELLs Group</p>
-  </footer>
+  <section class="member-section">
+    <h2>Ph.D Students</h2>
+    <div class="members-grid">
+      <div class="member-card"><img src="img/Zhu.jpg" alt="Zhu Yang" class="member-photo" /><div class="member-info"><h3>Zhu Yang</h3><p>Ph.D Student</p></div></div>
+      <div class="member-card"><img src="img/Hongming.jpg" alt="Hongming Liang" class="member-photo" /><div class="member-info"><h3>Hongming Liang</h3><p>Ph.D Student</p></div></div>
+      <div class="member-card member-card--placeholder"><img src="img/logo.png" alt="Jinyan Wang" class="member-photo" /><div class="member-info"><h3>Jinyan Wang</h3><p>Ph.D Student</p></div></div>
+      <div class="member-card member-card--placeholder"><img src="img/logo.png" alt="Binyuan Huang" class="member-photo" /><div class="member-info"><h3>Binyuan Huang</h3><p>Ph.D Student</p></div></div>
+    </div>
+  </section>
+
+  <section class="member-section">
+    <h2>Master Students</h2>
+    <div class="members-grid">
+      <div class="member-card"><img src="img/Haonan.jpg" alt="Haonan Luo" class="member-photo" /><div class="member-info"><h3>Haonan Luo</h3><p>Master Student</p></div></div>
+      <div class="member-card"><img src="img/Ting.jpg" alt="Ting Yan" class="member-photo" /><div class="member-info"><h3>Ting Yan</h3><p>Master Student</p></div></div>
+      <div class="member-card"><img src="img/Wenling.jpg" alt="Wenling Qian" class="member-photo" /><div class="member-info"><h3>Wenling Qian</h3><p>Master Student</p></div></div>
+      <div class="member-card member-card--placeholder"><img src="img/logo.png" alt="Hao Feng" class="member-photo" /><div class="member-info"><h3>Hao Feng</h3><p>Master Student</p></div></div>
+    </div>
+  </section>
+
+  <section class="member-section">
+    <h2>Undergraduates</h2>
+    <ul class="name-list">
+      <li>Peiyao Lin</li><li>Yuxuan Liu</li><li>Ruocheng Yang</li><li>Zhenyang Hong</li><li>Jinyang Gan</li><li>Haoran Yang</li><li>Dandan Zhang</li><li>Lifen Su</li><li>Qiyao Sun</li><li>Shilei Chi</li><li>Rongfei Yu</li><li>Zeyu Li</li>
+    </ul>
+  </section>
+
+  <section class="member-section">
+    <h2>Graduated Students</h2>
+    <ul class="name-list alumni-list">
+      <li><span>Qiao Tang</span><span class="degree">Master</span></li>
+      <li><span>Qiannan Liu</span><span class="degree">Bachelor</span></li>
+      <li><span>Xuran Tao</span><span class="degree">Bachelor</span></li>
+    </ul>
+  </section>
+
+  <footer><p>© 2025 SPELLs Group</p></footer>
 </body>
 </html>
