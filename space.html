@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPELLs Space | SPELLs Group</title>
+  <link rel="stylesheet" href="./assets/css/style.css" />
+  <style>
+    .space-shell { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+    .space-intro { text-align: center; margin-bottom: 2rem; }
+    .space-intro h1 { color: var(--mpi-green); }
+    .space-login { max-width: 420px; margin: 2rem auto 3rem; padding: 2rem; background: rgba(255,255,255,.88); border: 1px solid var(--border-soft); border-radius: 16px; box-shadow: var(--shadow-soft); }
+    .space-login input { width: 100%; box-sizing: border-box; padding: .8rem 1rem; margin: .75rem 0 1rem; border: 1px solid var(--border-soft); border-radius: 8px; font: inherit; }
+    .space-login button { border: 0; cursor: pointer; }
+    .space-error { min-height: 1.2em; color: #b14d4d; }
+    .space-content { display: none; }
+    .space-content.is-visible { display: block; }
+    .space-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; }
+    .space-card { display: block; padding: 1.25rem; border: 1px solid var(--border-soft); border-radius: 12px; background: rgba(255,255,255,.74); color: var(--text-main); text-decoration: none; }
+    .space-card:hover { border-color: var(--mpi-green); transform: translateY(-2px); }
+    .space-card h3 { color: var(--mpi-green); margin-top: 0; }
+    .space-logout { margin-top: 1.5rem; background: transparent; border: 1px solid var(--mpi-green); color: var(--mpi-green); padding: .6rem 1rem; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar glass">
+      <div class="logo"><img src="img/logo.png" alt="SPELLs Logo" class="logo-img" /></div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li><li><a href="research.html">Research</a></li><li><a href="members.html">Members</a></li><li><a href="publications.html">Publications</a></li><li><a href="contact.html">Contact</a></li><li><a href="space.html" class="active">SPELLs Space</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main class="space-shell">
+    <div class="space-intro"><h1>SPELLs Space</h1><p>Private group workspace for stories, check-in, Chat2AI, and future literature resources.</p></div>
+    <form class="space-login" id="space-login-form">
+      <h2>Member Login</h2><label for="space-password">Password</label><input id="space-password" type="password" autocomplete="current-password" required /><button class="btn" type="submit">Enter SPELLs Space</button><p class="space-error" id="space-error" aria-live="polite"></p><small>This device will remember the login.</small>
+    </form>
+    <section class="space-content" id="space-content">
+      <h2>Workspace</h2>
+      <div class="space-cards"><a class="space-card" href="story.html"><h3>Story</h3><p>Homepage of the SPELLs Space.</p></a><a class="space-card" href="checkin.html"><h3>Checkin</h3><p>Member location and status board.</p></a><a class="space-card" href="beyondstory.html"><h3>BeyondStory</h3><p>Literature storytelling resources.</p></a><a class="space-card" href="ourchat.html"><h3>Chat2AI</h3><p>DeepChat conversation archive.</p></a><a class="space-card" href="library.html"><h3>Literature Library</h3><p>Future literature database and resources.</p></a></div><button class="space-logout" type="button" onclick="spellsSpaceLogout()">Log out</button>
+    </section>
+  </main>
+  <script>
+    const authKey = 'spells_space_auth'; const form = document.getElementById('space-login-form'); const content = document.getElementById('space-content'); const error = document.getElementById('space-error'); const params = new URLSearchParams(window.location.search); const returnPage = params.get('return');
+    function showSpace() { form.style.display = 'none'; content.classList.add('is-visible'); }
+    if (localStorage.getItem(authKey) === '1') showSpace();
+    form.addEventListener('submit', function (event) { event.preventDefault(); if (document.getElementById('space-password').value === 'SPELLs2023') { localStorage.setItem(authKey, '1'); if (returnPage) window.location.href = returnPage; else showSpace(); } else error.textContent = 'Incorrect password. Please try again.'; });
+  </script>
+</body>
+</html>
